@@ -1,0 +1,20 @@
+{
+  "name": "kenekita-site",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "cms": "tinacms dev -c 'astro dev'",
+    "cms-build": "tinacms build"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "@tinacms/cli": "^2.2.6",
+    "astro": "^6.3.1",
+    "tailwindcss": "^4.3.0",
+    "tinacms": "^3.7.6"
+  }
+}

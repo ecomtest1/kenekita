@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Chi Siamo | KENEKITA"
+  description="Il tuo partner di fiducia per gli affitti turistici in Sardegna. Professionalità, esperienza e passione per l'ospitalità dal 2015."
+>
+  <section class="pt-32 pb-16 md:pt-40 md:pb-24">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+        <div class="lg:col-span-5">
+          <div class="sticky top-32">
+            <p class="text-terracotta text-sm uppercase tracking-[0.2em] font-medium mb-4">Chi Siamo</p>
+            <h1 class="font-serif text-4xl md:text-5xl text-charcoal font-medium mb-8">
+              La nostra storia
+            </h1>
+            <div class="aspect-[4/5] rounded-[2rem] overflow-hidden">
+              <img src="/images/about-team.jpg" alt="Team KENEKITA" class="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+        
+        <div class="lg:col-span-6 lg:col-start-7 space-y-10">
+          <div class="prose prose-lg max-w-none">
+            <p class="text-xl text-charcoal leading-relaxed font-serif italic">
+              "Nati dalla passione per l'ospitalità e l'amore per la Sardegna, aiutiamo ospiti e proprietari a vivere esperienze indimenticabili."
+            </p>
+          </div>
+          
+          <div class="space-y-8">
+            <div>
+              <h2 class="font-serif text-2xl text-charcoal font-medium mb-4">Dal 2015</h2>
+              <p class="text-stone-warm leading-relaxed">
+                KENEKITA nasce nel 2015 con una missione chiara: offrire un servizio di property management 
+                all'altezza delle aspettative più esigenti. Partiti da una singola proprietà, oggi gestiamo 
+                oltre 20 ville e appartamenti selezionati nelle zone più esclusive della Sardegna.
+              </p>
+            </div>
+            
+            <div>
+              <h2 class="font-serif text-2xl text-charcoal font-medium mb-4">I nostri valori</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="p-6 rounded-2xl bg-sand border border-stone-warm/10">
+                  <h3 class="font-medium text-charcoal mb-2">Professionalità</h3>
+                  <p class="text-sm text-stone-warm">Ogni dettaglio è curato con precisione e dedizione.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-sand border border-stone-warm/10">
+                  <h3 class="font-medium text-charcoal mb-2">Trasparenza</h3>
+                  <p class="text-sm text-stone-warm">Report chiari e comunicazione costante con i proprietari.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-sand border border-stone-warm/10">
+                  <h3 class="font-medium text-charcoal mb-2">Passione</h3>
+                  <p class="text-sm text-stone-warm">Amiamo la Sardegna e vogliamo farla vivere al meglio.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-sand border border-stone-warm/10">
+                  <h3 class="font-medium text-charcoal mb-2">Innovazione</h3>
+                  <p class="text-sm text-stone-warm">Pricing dinamico e marketing digitale per massimi risultati.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h2 class="font-serif text-2xl text-charcoal font-medium mb-4">Il team</h2>
+              <p class="text-stone-warm leading-relaxed">
+                Un team di professionisti locali con anni di esperienza nel settore turistico. 
+                Conosciamo ogni angolo della Sardegna e siamo sempre pronti ad aiutarti.
+              </p>
+            </div>
+          </div>
+          
+          <div class="pt-10 border-t border-stone-warm/10">
+            <a 
+              href="/contatti" 
+              class="group inline-flex items-center gap-3 px-8 py-4 bg-charcoal text-white font-medium rounded-full hover:bg-charcoal-light transition-all duration-300"
+            >
+              <span>Parla con noi</span>
+              <span class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

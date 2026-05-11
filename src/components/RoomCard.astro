@@ -1,0 +1,92 @@
+---
+interface Props {
+  room: any;
+  index?: number;
+}
+
+const { room, index = 0 } = Astro.props;
+const { title, heroImage, location, guests, bedrooms, bathrooms, slug } = room.data;
+
+const delayClass = index < 6 ? `animate-delay-${(index % 4 + 1) * 100}` : '';
+---
+
+<article class="group animate-fade-in-up opacity-0" style={`animation-delay: ${index * 100}ms`}>
+  <a href={`/ville/${slug}`} class="block">
+    <div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-5 bg-sand-dark">
+      {heroImage ? (
+        <img 
+          src={heroImage} 
+          alt={title}
+          class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+          loading="lazy"
+        />
+      ) : (
+        <div class="w-full h-full bg-stone-warm/10 flex items-center justify-center">
+          <span class="text-stone-warm/40 font-serif text-lg">{title}</span>
+        </div>
+      )}
+      <div class="absolute top-4 left-4">
+        <span class="px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-charcoal">
+          {location || 'Sardegna'}
+        </span>
+      </div>
+    </div>
+  </a>
+  
+  <div class="space-y-3">
+    <h3 class="font-serif text-2xl text-charcoal font-medium group-hover:text-terracotta transition-colors">
+      <a href={`/ville/${slug}`}>{title}</a>
+    </h3>
+    
+    <div class="flex items-center gap-4 text-sm text-stone-warm">
+      {guests && (
+        <span class="flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+          </svg>
+          {guests} ospiti
+        </span>
+      )}
+      {bedrooms && (
+        <span class="flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+          </svg>
+          {bedrooms} camere
+        </span>
+      )}
+    </div>
+    
+    <div class="flex gap-3 pt-2">
+      <a 
+        href={`/ville/${slug}`}
+        class="flex-1 py-3 text-center text-sm font-medium text-charcoal border border-stone-warm/20 rounded-full hover:border-terracotta hover:text-terracotta transition-all duration-300"
+      >
+        Scopri di più
+      </a>
+      {room.data.bookingLink && (
+        <a 
+          href={room.data.bookingLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="flex-1 py-3 text-center text-sm font-medium text-white bg-terracotta rounded-full hover:bg-terracotta-dark transition-all duration-300"
+        >
+          Verifica disponibilità
+        </a>
+      )}
+    </div>
+  </div>
+</article>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.animate-fade-in-up').forEach(el => observer.observe(el));
+</script>

@@ -1,0 +1,163 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RoomCard from '../../components/RoomCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const rooms = await getCollection('rooms');
+  return rooms.map(room => ({
+    params: { slug: room.data.slug },
+    props: { room },
+  }));
+}
+
+const { room } = Astro.props;
+const { title, description, heroImage, gallery, bookingLink, location, guests, bedrooms, bathrooms, metaTitle, metaDescription } = room.data;
+
+const allRooms = await getCollection('rooms');
+const relatedRooms = allRooms.filter(r => r.data.slug !== room.data.slug).slice(0, 3);
+---
+
+<Layout 
+  title={metaTitle || `${title} | KENEKITA`}
+  description={metaDescription || `Scopri ${title} in Sardegna. Ville e appartamenti selezionati per una vacanza indimenticabile.`}
+  image={heroImage}
+  type="website"
+>
+  <!-- Hero -->
+  <section class="relative pt-32 pb-16 md:pt-40 md:pb-24">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="mb-8">
+        <nav class="flex items-center gap-2 text-sm text-stone-warm mb-6">
+          <a href="/" class="hover:text-charcoal transition-colors">Home</a>
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+          <a href="/ville" class="hover:text-charcoal transition-colors">Ville</a>
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+          <span class="text-charcoal">{title}</span>
+        </nav>
+        
+        {location && (
+          <p class="text-terracotta text-sm uppercase tracking-[0.2em] font-medium mb-4">{location}</p>
+        )}
+        <h1 class="font-serif text-4xl md:text-6xl text-charcoal font-medium mb-6">{title}</h1>
+        
+        <div class="flex flex-wrap gap-6 text-sm text-stone-warm">
+          {guests && (
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+              </svg>
+              {guests} ospiti
+            </span>
+          )}
+          {bedrooms && (
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+              </svg>
+              {bedrooms} camere da letto
+            </span>
+          )}
+          {bathrooms && (
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              {bathrooms} bagni
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="pb-16 md:pb-24">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div class="md:col-span-8">
+          <div class="aspect-[16/10] rounded-2xl overflow-hidden bg-sand-dark">
+            {heroImage ? (
+              <img src={heroImage} alt={title} class="w-full h-full object-cover" />
+            ) : (
+              <div class="w-full h-full bg-stone-warm/10 flex items-center justify-center">
+                <span class="text-stone-warm/40 font-serif text-xl">{title}</span>
+              </div>
+            )}
+          </div>
+        </div>
+        <div class="md:col-span-4 grid grid-cols-2 md:grid-cols-1 gap-4">
+          {gallery?.slice(0, 4).map((img: string) => (
+            <div class="aspect-[4/3] md:aspect-auto rounded-xl overflow-hidden bg-sand-dark">
+              <img src={img} alt={`${title} - galleria`} class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Description -->
+  <section class="pb-16 md:pb-24">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-7">
+          <div class="prose prose-lg max-w-none">
+            {description ? (
+              <Fragment set:html={description} />
+            ) : (
+              <p class="text-stone-warm text-lg leading-relaxed">
+                Scopri questa splendida proprietà in Sardegna. Un rifugio perfetto per la tua vacanza,
+                curato nei minimi dettagli dal team KENEKITA.
+              </p>
+            )}
+          </div>
+        </div>
+        <div class="lg:col-span-4 lg:col-start-9">
+          <div class="sticky top-32 p-8 rounded-2xl bg-white border border-stone-warm/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)]">
+            <h3 class="font-serif text-2xl text-charcoal font-medium mb-6">Prenota ora</h3>
+            <p class="text-stone-warm text-sm mb-6">
+              Verifica la disponibilità e prenota direttamente attraverso i nostri partner.
+            </p>
+            {bookingLink ? (
+              <a 
+                href={bookingLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full py-4 bg-terracotta text-white text-center font-medium rounded-full hover:bg-terracotta-dark transition-all duration-300 block"
+              >
+                Verifica disponibilità
+              </a>
+            ) : (
+              <a 
+                href="/contatti"
+                class="w-full py-4 bg-terracotta text-white text-center font-medium rounded-full hover:bg-terracotta-dark transition-all duration-300 block"
+              >
+                Contattaci
+              </a>
+            )}
+            <div class="mt-6 pt-6 border-t border-stone-warm/10 text-center">
+              <p class="text-xs text-stone-warm">
+                Hai domande? <a href="/contatti" class="text-terracotta hover:underline">Scrivici</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  {relatedRooms.length > 0 && (
+    <section class="py-16 md:py-24 bg-sand border-t border-stone-warm/10">
+      <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+        <h2 class="font-serif text-3xl text-charcoal font-medium mb-10">Altre proprietà che potrebbero interessarti</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {relatedRooms.map((r, i) => (
+            <RoomCard room={r} index={i} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>

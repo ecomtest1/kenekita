@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RoomCard from '../../components/RoomCard.astro';
+import { getCollection } from 'astro:content';
+
+const rooms = await getCollection('rooms');
+---
+
+<Layout 
+  title="Ville e Appartamenti | KENEKITA"
+  description="Scopri le nostre 21 ville e appartamenti selezionati in Sardegna. Ogni proprietà è curata nei minimi dettagli per una vacanza indimenticabile."
+>
+  <section class="pt-32 pb-16 md:pt-40 md:pb-24">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="max-w-2xl mb-16">
+        <p class="text-terracotta text-sm uppercase tracking-[0.2em] font-medium mb-4">Le nostre proprietà</p>
+        <h1 class="font-serif text-4xl md:text-6xl text-charcoal font-medium mb-6">
+          Ville e Appartamenti
+        </h1>
+        <p class="text-stone-warm text-lg leading-relaxed">
+          21 proprietà selezionate in Sardegna, ognuna con carattere unico e servizi esclusivi.
+          Trova la casa vacanza perfetta per il tuo soggiorno.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {rooms.map((room, i) => (
+          <RoomCard room={room} index={i} />
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
