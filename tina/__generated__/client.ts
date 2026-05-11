@@ -1,5 +1,5 @@
 import { createClient } from "tinacms/dist/client";
 import { queries } from "./types.ts";
-export const client = createClient({ url: 'http://localhost:4001/graphql', token: 'null', queries,  });
+export const client = createClient({ cacheDir: '/Users/andreabonacina/Desktop/foto-kenekita copy/site/tina/__generated__/.cache/1778507171025', url: 'https://content.tinajs.io/2.3/content/dummy/github/main', token: 'dummy', queries,  });
 export default client;
   

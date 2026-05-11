@@ -154,12 +154,6 @@ var config_default = defineConfig({
   },
   schema: {
     collections: [roomCollection, pageCollection]
-  },
-  search: {
-    tina: {
-      indexerToken: process.env.TINA_SEARCH_TOKEN,
-      stopwordLanguages: ["ita"]
-    }
   }
 });
 export {
