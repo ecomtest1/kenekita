@@ -140,7 +140,7 @@ var pageCollection = {
 // tina/config.ts
 var config_default = defineConfig({
   branch: process.env.VERCEL_GIT_COMMIT_REF || "main",
-  clientId: process.env.TINA_CLIENT_ID || null,
+  clientId: "0c732506-cf9e-4409-b879-dff0af8e922d",
   token: process.env.TINA_TOKEN || null,
   build: {
     outputFolder: "admin",
