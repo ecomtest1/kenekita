@@ -1,0 +1,251 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const rooms = await getCollection('rooms');
+const sortedRooms = rooms.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<Layout 
+  title="Admin | KENEKITA"
+  description="Pannello di gestione contenuti"
+  noindex
+>
+  <section class="pt-32 pb-16 md:pt-40 md:pb-24 min-h-[80dvh]">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+      <div class="mb-12">
+        <p class="text-terracotta text-sm uppercase tracking-[0.2em] font-medium mb-4">Gestione Contenuti</p>
+        <h1 class="font-serif text-4xl md:text-5xl text-charcoal font-medium mb-4">
+          Pannello Admin
+        </h1>
+        <p class="text-stone-warm max-w-xl">
+          Modifica le camere e le pagine del sito. Il codice YAML generato puo essere copiato e incollato su GitHub.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Sidebar camere -->
+        <div class="lg:col-span-1">
+          <div class="sticky top-32 p-6 rounded-2xl bg-sand border border-stone-warm/10 max-h-[70vh] overflow-y-auto">
+            <h3 class="font-serif text-xl text-charcoal font-medium mb-4">Camere ({sortedRooms.length})</h3>
+            <div class="space-y-1" id="room-list">
+              {sortedRooms.map((room, i) => (
+                <button 
+                  class="room-btn w-full text-left px-4 py-3 rounded-xl text-sm transition-all duration-200 hover:bg-white"
+                  data-index={i}
+                  type="button"
+                >
+                  <div class="font-medium text-charcoal">{room.data.title}</div>
+                  <div class="text-stone-warm text-xs">{room.data.location || 'Sardegna'}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Editor -->
+        <div class="lg:col-span-2">
+          <div class="p-8 rounded-2xl bg-white border border-stone-warm/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)]">
+            <div class="flex items-center justify-between mb-6">
+              <h2 id="editor-title" class="font-serif text-2xl text-charcoal font-medium">Seleziona una camera</h2>
+              <span id="editor-slug" class="text-xs text-stone-warm font-mono bg-sand px-3 py-1 rounded-full hidden"></span>
+            </div>
+            
+            <div id="editor-form" class="space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm text-stone-warm mb-2 font-medium">Nome Camera</label>
+                  <input type="text" id="field-title" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors" />
+                </div>
+                <div>
+                  <label class="block text-sm text-stone-warm mb-2 font-medium">Slug (URL)</label>
+                  <input type="text" id="field-slug" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors font-mono text-sm" readonly />
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm text-stone-warm mb-2 font-medium">Localita</label>
+                  <input type="text" id="field-location" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors" />
+                </div>
+                <div>
+                  <label class="block text-sm text-stone-warm mb-2 font-medium">Link Prenotazione</label>
+                  <input type="text" id="field-booking" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors" />
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm text-stone-warm mb-2 font-medium">Ospiti</label>
+                  <input type="number" id="field-guests" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors" />
+                </div>
+                <div>
+                  <label class="block text-sm text-stone-warm mb-2 font-medium">Camere</label>
+                  <input type="number" id="field-bedrooms" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors" />
+                </div>
+                <div>
+                  <label class="block text-sm text-stone-warm mb-2 font-medium">Bagni</label>
+                  <input type="number" id="field-bathrooms" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors" />
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm text-stone-warm mb-2 font-medium">Descrizione</label>
+                <textarea id="field-description" rows="5" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors resize-none"></textarea>
+              </div>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm text-stone-warm mb-2 font-medium">Meta Title (SEO)</label>
+                  <input type="text" id="field-metaTitle" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors" />
+                </div>
+                <div>
+                  <label class="block text-sm text-stone-warm mb-2 font-medium">Meta Description (SEO)</label>
+                  <input type="text" id="field-metaDesc" class="w-full px-4 py-3 bg-sand border border-stone-warm/10 rounded-xl text-charcoal focus:outline-none focus:border-terracotta transition-colors" />
+                </div>
+              </div>
+              
+              <div class="p-4 rounded-xl bg-sand border border-stone-warm/10">
+                <label class="block text-sm text-stone-warm mb-2 font-medium">Foto attuali</label>
+                <p id="photo-info" class="text-sm text-charcoal"></p>
+              </div>
+            </div>
+            
+            <div class="mt-8 pt-6 border-t border-stone-warm/10">
+              <h3 class="font-medium text-charcoal mb-3">Codice YAML generato</h3>
+              <div class="relative">
+                <textarea id="yaml-output" rows="16" readonly class="w-full px-4 py-3 bg-charcoal text-sand-dark/80 rounded-xl font-mono text-xs resize-none"></textarea>
+                <button id="copy-btn" class="absolute top-3 right-3 px-3 py-1.5 bg-terracotta text-white text-xs font-medium rounded-lg hover:bg-terracotta-dark transition-colors">
+                  Copia
+                </button>
+              </div>
+              <div class="mt-4 p-4 rounded-xl bg-terracotta/5 border border-terracotta/10">
+                <p class="text-sm text-charcoal font-medium mb-1">Come aggiornare il sito:</p>
+                <ol class="text-sm text-stone-warm list-decimal list-inside space-y-1">
+                  <li>Copia il codice YAML sopra</li>
+                  <li>Vai su <a href="https://github.com/ecomtest1/kenekita/tree/main/src/content/rooms" target="_blank" class="text-terracotta hover:underline">GitHub → src/content/rooms</a></li>
+                  <li>Clicca il file della camera → icona matita (✏️)</li>
+                  <li>Incolla il nuovo codice e clicca <strong>Commit changes</strong></li>
+                  <li>Cloudflare si ricostruisce automaticamente in 1 minuto</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script define:vars={{ roomsData: sortedRooms.map(r => r.data) }}>
+    (function() {
+      let currentIndex = 0;
+      
+      const btns = document.querySelectorAll('.room-btn');
+      const fields = {
+        title: document.getElementById('field-title'),
+        slug: document.getElementById('field-slug'),
+        location: document.getElementById('field-location'),
+        booking: document.getElementById('field-booking'),
+        guests: document.getElementById('field-guests'),
+        bedrooms: document.getElementById('field-bedrooms'),
+        bathrooms: document.getElementById('field-bathrooms'),
+        description: document.getElementById('field-description'),
+        metaTitle: document.getElementById('field-metaTitle'),
+        metaDesc: document.getElementById('field-metaDesc'),
+      };
+      const yamlOutput = document.getElementById('yaml-output');
+      const photoInfo = document.getElementById('photo-info');
+      const editorTitle = document.getElementById('editor-title');
+      const editorSlug = document.getElementById('editor-slug');
+      const editorForm = document.getElementById('editor-form');
+      
+      function loadRoom(index) {
+        currentIndex = index;
+        const room = roomsData[index];
+        
+        btns.forEach((b, i) => {
+          const active = i === index;
+          b.classList.toggle('bg-white', active);
+          b.classList.toggle('shadow-sm', active);
+          b.classList.toggle('border-l-4', active);
+          b.classList.toggle('border-terracotta', active);
+        });
+        
+        editorTitle.textContent = room.title;
+        editorSlug.textContent = room.slug;
+        editorSlug.classList.remove('hidden');
+        editorForm.style.display = 'block';
+        
+        fields.title.value = room.title || '';
+        fields.slug.value = room.slug || '';
+        fields.location.value = room.location || '';
+        fields.booking.value = room.bookingLink || '';
+        fields.guests.value = room.guests || '';
+        fields.bedrooms.value = room.bedrooms || '';
+        fields.bathrooms.value = room.bathrooms || '';
+        fields.description.value = room.description || '';
+        fields.metaTitle.value = room.metaTitle || '';
+        fields.metaDesc.value = room.metaDescription || '';
+        
+        const totalPhotos = room.gallery ? room.gallery.length + 1 : 1;
+        photoInfo.innerHTML = `<span class="font-medium">${totalPhotos}</span> foto totali (1 hero + ${totalPhotos - 1} galleria)`;
+        
+        generateYaml();
+      }
+      
+      function generateYaml() {
+        const room = roomsData[currentIndex];
+        const data = {
+          title: fields.title.value,
+          slug: room.slug,
+          description: fields.description.value,
+          heroImage: room.heroImage,
+          gallery: room.gallery || [],
+          bookingLink: fields.booking.value,
+          location: fields.location.value,
+          guests: fields.guests.value ? parseInt(fields.guests.value) : '',
+          bedrooms: fields.bedrooms.value ? parseInt(fields.bedrooms.value) : '',
+          bathrooms: fields.bathrooms.value ? parseInt(fields.bathrooms.value) : '',
+          metaTitle: fields.metaTitle.value,
+          metaDescription: fields.metaDesc.value,
+        };
+        
+        let yaml = `title: "${data.title}"\n`;
+        yaml += `slug: "${data.slug}"\n`;
+        yaml += `description: "${data.description}"\n`;
+        yaml += `heroImage: "${data.heroImage}"\n`;
+        if (data.gallery.length) {
+          yaml += `gallery:\n`;
+          data.gallery.forEach(g => yaml += `  - "${g}"\n`);
+        }
+        if (data.bookingLink) yaml += `bookingLink: "${data.bookingLink}"\n`;
+        if (data.location) yaml += `location: "${data.location}"\n`;
+        if (data.guests) yaml += `guests: ${data.guests}\n`;
+        if (data.bedrooms) yaml += `bedrooms: ${data.bedrooms}\n`;
+        if (data.bathrooms) yaml += `bathrooms: ${data.bathrooms}\n`;
+        if (data.metaTitle) yaml += `metaTitle: "${data.metaTitle}"\n`;
+        if (data.metaDescription) yaml += `metaDescription: "${data.metaDescription}"\n`;
+        
+        yamlOutput.value = yaml;
+      }
+      
+      btns.forEach((b, i) => {
+        b.addEventListener('click', () => loadRoom(i));
+      });
+      
+      Object.values(fields).forEach(f => {
+        if (f) f.addEventListener('input', generateYaml);
+      });
+      
+      document.getElementById('copy-btn').addEventListener('click', () => {
+        yamlOutput.select();
+        document.execCommand('copy');
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = 'Copiato!';
+        setTimeout(() => btn.textContent = 'Copia', 2000);
+      });
+      
+      if (roomsData.length) loadRoom(0);
+    })();
+  </script>
+</Layout>

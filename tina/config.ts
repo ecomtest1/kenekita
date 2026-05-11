@@ -3,9 +3,9 @@ import { roomCollection } from "./collections/room";
 import { pageCollection } from "./collections/page";
 
 export default defineConfig({
-  branch: process.env.VERCEL_GIT_COMMIT_REF || "main",
-  clientId: process.env.TINA_CLIENT_ID || null,
-  token: process.env.TINA_TOKEN || null,
+  branch: "main",
+  clientId: "0c732506-cf9e-4409-b879-dff0af8e922d",
+  token: null,
   build: {
     outputFolder: "admin",
     publicFolder: "public",
