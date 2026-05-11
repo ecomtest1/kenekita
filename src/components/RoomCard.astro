@@ -5,35 +5,53 @@ interface Props {
 }
 
 const { room, index = 0 } = Astro.props;
-const { title, heroImage, location, guests, bedrooms, bathrooms, slug } = room.data;
+const { title, heroImage, gallery = [], location, guests, bedrooms, bathrooms, slug } = room.data;
 
-const delayClass = index < 6 ? `animate-delay-${(index % 4 + 1) * 100}` : '';
+// Combina hero + galleria per il carousel
+const allImages = heroImage ? [heroImage, ...gallery] : gallery;
 ---
 
 <article class="group animate-fade-in-up opacity-0" style={`animation-delay: ${index * 100}ms`}>
-  <a href={`/ville/${slug}`} class="block">
-    <div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-5 bg-sand-dark">
-      {heroImage ? (
-        <img 
-          src={heroImage} 
-          alt={title}
-          class="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
-          loading="lazy"
-        />
-      ) : (
-        <div class="w-full h-full bg-stone-warm/10 flex items-center justify-center">
-          <span class="text-stone-warm/40 font-serif text-lg">{title}</span>
-        </div>
-      )}
-      <div class="absolute top-4 left-4">
-        <span class="px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-charcoal">
-          {location || 'Sardegna'}
-        </span>
+  <div class="relative aspect-[4/3] rounded-2xl overflow-hidden mb-5 bg-sand-dark room-carousel" data-room-slug={slug}>
+    {allImages.length > 0 ? (
+      <div class="carousel-track flex h-full transition-transform duration-500 ease-out" style={`width: ${allImages.length * 100}%`}>
+        {allImages.map((img: string, i: number) => (
+          <div class="relative h-full" style={`width: ${100 / allImages.length}%`}>
+            <img 
+              src={img} 
+              alt={`${title} - foto ${i + 1}`}
+              class="w-full h-full object-cover"
+              loading={i === 0 ? "eager" : "lazy"}
+            />
+          </div>
+        ))}
       </div>
+    ) : (
+      <div class="w-full h-full bg-stone-warm/10 flex items-center justify-center">
+        <span class="text-stone-warm/40 font-serif text-lg">{title}</span>
+      </div>
+    )}
+    
+    <div class="absolute top-4 left-4 z-10">
+      <span class="px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-charcoal">
+        {location || 'Sardegna'}
+      </span>
     </div>
-  </a>
+    
+    {/* Indicatori */}
+    {allImages.length > 1 && (
+      <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+        {allImages.map((_: string, i: number) => (
+          <span class="carousel-dot w-1.5 h-1.5 rounded-full bg-white/60 transition-all duration-300" data-index={i} />
+        ))}
+      </div>
+    )}
+    
+    {/* Overlay click per andare alla pagina */}
+    <a href={`/ville/${slug}`} class="absolute inset-0 z-20" aria-label={`Vedi ${title}`} />
+  </div>
   
-  <div class="space-y-3">
+  <div class="space-y-3 relative z-30">
     <h3 class="font-serif text-2xl text-charcoal font-medium group-hover:text-terracotta transition-colors">
       <a href={`/ville/${slug}`}>{title}</a>
     </h3>
@@ -79,6 +97,51 @@ const delayClass = index < 6 ? `animate-delay-${(index % 4 + 1) * 100}` : '';
 </article>
 
 <script>
+  // Carousel auto-play con stop su hover
+  document.querySelectorAll('.room-carousel').forEach(carousel => {
+    const track = carousel.querySelector('.carousel-track') as HTMLElement;
+    const dots = carousel.querySelectorAll('.carousel-dot');
+    if (!track || dots.length <= 1) return;
+
+    const total = dots.length;
+    let current = 0;
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    function goTo(index: number) {
+      current = index;
+      track.style.transform = `translateX(-${current * (100 / total)}%)`;
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('bg-white', i === current);
+        dot.classList.toggle('bg-white/60', i !== current);
+        dot.classList.toggle('w-3', i === current);
+        dot.classList.toggle('w-1.5', i !== current);
+      });
+    }
+
+    function next() {
+      goTo((current + 1) % total);
+    }
+
+    function start() {
+      if (interval) clearInterval(interval);
+      interval = setInterval(next, 3000);
+    }
+
+    function stop() {
+      if (interval) clearInterval(interval);
+    }
+
+    carousel.addEventListener('mouseenter', stop);
+    carousel.addEventListener('mouseleave', start);
+    carousel.addEventListener('touchstart', stop, { passive: true });
+    carousel.addEventListener('touchend', start, { passive: true });
+
+    // Init
+    goTo(0);
+    start();
+  });
+
+  // Fade in animation
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {

@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Grazie | KENEKITA"
+  description="Grazie per averci contattato. Ti risponderemo al piu presto."
+  noindex
+>
+  <section class="pt-32 pb-16 md:pt-40 md:pb-24 min-h-[60dvh] flex items-center">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+      <div class="w-20 h-20 rounded-full bg-macchia/10 text-macchia flex items-center justify-center mx-auto mb-8">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      
+      <h1 class="font-serif text-4xl md:text-6xl text-charcoal font-medium mb-6">
+        Grazie di cuore
+      </h1>
+      
+      <p class="text-stone-warm text-lg md:text-xl max-w-lg mx-auto mb-10 leading-relaxed">
+        Il tuo messaggio e arrivato nelle nostre mani. Ti risponderemo entro 24 ore, 
+        spesso anche prima. Nel frattempo, sogniamo insieme la Sardegna.
+      </p>
+      
+      <div class="flex flex-wrap justify-center gap-4">
+        <a 
+          href="/ville" 
+          class="px-8 py-4 bg-terracotta text-white font-medium rounded-full hover:bg-terracotta-dark transition-all duration-300"
+        >
+          Sfoglia le proprieta
+        </a>
+        <a 
+          href="/" 
+          class="px-8 py-4 text-charcoal font-medium border border-stone-warm/20 rounded-full hover:border-terracotta hover:text-terracotta transition-all duration-300"
+        >
+          Torna alla home
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
