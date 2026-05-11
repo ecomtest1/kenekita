@@ -1,0 +1,23 @@
+fragment RoomParts on Room {
+  __typename
+  title
+  slug
+  description
+  heroImage
+  gallery
+  bookingLink
+  metaTitle
+  metaDescription
+  location
+  guests
+  bedrooms
+  bathrooms
+}
+
+fragment PageParts on Page {
+  __typename
+  title
+  metaTitle
+  metaDescription
+  body
+}

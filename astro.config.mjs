@@ -5,7 +5,10 @@ export default defineConfig({
   site: 'https://kenekita.it',
   output: 'static',
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    server: {
+      allowedHosts: true
+    }
   },
   image: {
     service: {
