@@ -7,7 +7,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     server: {
-      allowedHosts: true
+      allowedHosts: true,
+      cors: true,
+      host: true
     }
   },
   image: {
